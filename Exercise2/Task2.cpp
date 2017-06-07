@@ -13,7 +13,7 @@
 
 void xerror(const char *msg);
 static void *thread_main(void *arg);
-void thread_cleanup(void *arg);
+static void thread_cleanup(void *arg);
 
 //threads
 static pthread_t threadId[THREADCOUNT];
@@ -55,7 +55,7 @@ int main(void)
 		pthread_mutex_unlock(&queueMutex);
 	}
 	fprintf(stdout, "[MAIN] Place 4 0 into the queue...\n");
-	for(int i = THREADCOUNT; i > 1; i--)
+	for(int i = THREADCOUNT; i > 0; i--)
 	{
 		pthread_mutex_lock(&queueMutex);
 		queue.push(0);
@@ -106,14 +106,14 @@ static void *thread_main(void *arg)
 			fprintf(stdout, "[THREAD] Thread received \'0\' in queue...\n");
 			nextVal = 0;
 			pthread_mutex_unlock(&queueMutex);
-			continue;
+			continue; //why not break and remove the nextVal :^)
 		}
 
 		//if the value != 0, we add it
 		front = (int)queue.front();
-		localSum += front;
 		queue.pop();
 		pthread_mutex_unlock(&queueMutex);
+		localSum += front;
 	}
 	
 	//in case we got here, there was a 0 in the queue, go ahead
