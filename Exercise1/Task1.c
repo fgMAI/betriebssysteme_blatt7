@@ -13,7 +13,7 @@
 
 void xerror(const char *msg);
 static void *thread_main(void *arg);
-void thread_cleanup(void *arg);
+static void thread_cleanup(void *arg);
 
 typedef struct thread_info
 {
@@ -75,7 +75,7 @@ int main(void)
 		if(rand() % 2) //==0
 		{
 			fprintf(stdout, "[MAIN] Cancelling Thread #%d... Poor dude\n", i);
-			//ret = pthread_cancel(threadId[i]);
+			ret = pthread_cancel(threadId[i]);
 		}
 
 		//verify everything
